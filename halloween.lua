@@ -142,7 +142,7 @@ pcall(function() gui.Parent = game:GetService("CoreGui") end)
 if not gui.Parent then gui.Parent = LP:WaitForChild("PlayerGui") end
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 250, 0, 240)
+frame.Size = UDim2.new(0, 250, 0, 250)
 frame.Position = UDim2.new(0, 20, 0, 100)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 24)
 frame.BorderSizePixel = 0
@@ -185,3 +185,12 @@ local btnAfk = makeBtn("Anti-AFK: ON", 76, function()
     state.afk = not state.afk
     btnAfk.Text = "Anti-AFK: " .. (state.afk and "ON" or "OFF")
     btnAfk.BackgroundColor3 = state.afk and Color3.fromRGB(40, 40, 48) or Color3.fromRGB(80, 30, 30)
+end)
+
+local logBox = Instance.new("TextLabel", frame)
+logBox.Size = UDim2.new(1, -20, 0, 55)
+logBox.Position = UDim2.new(0, 10, 0, 112)
+logBox.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+logBox.BorderSizePixel = 0
+logBox.Text = ""
+logBox.TextColor3 = Color3.fromRGB(180, 
