@@ -39,7 +39,7 @@ local function hit(name, kws)
     return false
 end
 
--- ANTI-AFK
+-- ================= ANTI-AFK =================
 task.spawn(function()
     while state.run do
         task.wait(CFG.AntiAFKDelay)
@@ -53,6 +53,7 @@ task.spawn(function()
     end
 end)
 
+-- ================= DETECÇÃO =================
 local function isDoor(p)
     if not p or not p:IsA("BasePart") then return false end
     if LP.Character and p:IsDescendantOf(LP.Character) then return false end
@@ -84,6 +85,7 @@ local function findPrompt(part)
     end
 end
 
+-- ================= AÇÃO =================
 local function tp(part)
     local c = LP.Character; if not c then return end
     local r = c:FindFirstChild("HumanoidRootPart"); if not r then return end
@@ -102,6 +104,7 @@ local function firePrompt(p)
     end)
 end
 
+-- ================= LOOP PRINCIPAL =================
 task.spawn(function()
     local lastDoor, lastT = nil, 0
     while state.run do
@@ -109,11 +112,17 @@ task.spawn(function()
             pcall(function()
                 local door, dist = nearestDoor()
                 if door then
-                    if dist > CFG.ArriveDist then tp(door); task.wait(CFG.ActionDelay) end
+                    if dist > CFG.ArriveDist then
+                        tp(door)
+                        task.wait(CFG.ActionDelay)
+                    end
                     local now = tick()
                     if door ~= lastDoor or (now - lastT) > 1.0 then
                         local pr = findPrompt(door)
-                        if pr then firePrompt(pr); log("prompt:", pr.Name) end
+                        if pr then
+                            firePrompt(pr)
+                            log("prompt:", pr.Name)
+                        end
                         lastDoor, lastT = door, now
                         task.wait(CFG.PostWait)
                     end
@@ -133,7 +142,7 @@ pcall(function() gui.Parent = game:GetService("CoreGui") end)
 if not gui.Parent then gui.Parent = LP:WaitForChild("PlayerGui") end
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 250, 0, 210)
+frame.Size = UDim2.new(0, 250, 0, 240)
 frame.Position = UDim2.new(0, 20, 0, 100)
 frame.BackgroundColor3 = Color3.fromRGB(20, 20, 24)
 frame.BorderSizePixel = 0
@@ -176,7 +185,3 @@ local btnAfk = makeBtn("Anti-AFK: ON", 76, function()
     state.afk = not state.afk
     btnAfk.Text = "Anti-AFK: " .. (state.afk and "ON" or "OFF")
     btnAfk.BackgroundColor3 = state.afk and Color3.fromRGB(40, 40, 48) or Color3.fromRGB(80, 30, 30)
-end)
-
-local btnStop = makeBtn("Parar script", 112, function()
-    state.run =
